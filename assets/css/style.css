@@ -59,4 +59,6 @@
 
 #scatter {
     text-align: center;
+    background-color: ghostwhite;
+    border: thin solid black;
 }

@@ -12,6 +12,10 @@
   body {
     /* Padding bottom by footer height */
     padding-bottom: 80px;
+    font-family: 'Droid Serif', serif;
+    font-size: 20px;
+    color: #2f2f2f;
+    background-color: #f9f7f1;
   }
   
   #footer {
@@ -22,11 +26,37 @@
     padding-top: 20px;
     padding-bottom: 40px;
     text-align: center;
-    background-color: #f5f5f5;
+    color: rgb(255, 255, 255);
+    background-color: #999999;
   }
   
   #footer p {
     margin: 0;
     font-size: 16px;
   }
-  
+
+.newspaperHeading {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 80px;
+    text-transform: uppercase;
+    display: inline-block;
+    line-height: 72px;
+    margin-bottom: 20px;
+}  
+
+.articleHeading {
+    text-align: center;
+    line-height: normal;
+    font-family: 'Playfair Display', serif;
+    display: block;
+    margin: 0 auto;
+    font-weight: 700;
+    font-size: 30px;
+    text-transform: uppercase;
+    padding: 10px 0 10px 0;
+}
+
+#scatter {
+    text-align: center;
+}

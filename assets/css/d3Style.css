@@ -26,13 +26,13 @@
   /* font size dependent on radius, see app.js */
   .stateText {
     font-family: 'Droid Serif', serif;
-    fill: #dd1818;
+    fill: #182cdd;
     text-anchor: middle;
   }
   
   .stateCircle {
     fill: #89bdd3;
-    stroke: #ad4f4f;
+    stroke: rgb(219, 219, 255);
   }
   
   .chart {

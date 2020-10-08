@@ -12,31 +12,45 @@
 
 <body>
   <div class="container-fluid">
-    <div class="jumbotron" style="text-align: center; background-color: #fdf0c8;">
+    <div class="jumbotron" style="text-align: center;">
         <h1 class="newspaperHeading">The D3 Times</h1>
     </div>
     <div class="row" style="justify-content: center;">
-      <div class="col-xs-12  col-md-9">
+            <h4 style="font-style: italic;">Below is an interactive scatterplot. Click on the axis labels to change the data within the chart.</h4>
+    </div>
+    <div class="row" style="justify-content: center;">
+      <div class="col-xs-12" style="border: thin solid black;">
         <div id="scatter">
           <!-- We append our chart here. -->
         </div>
+        <div id='linRegress'>
+            <!--We append our Correlation here-->
+        </div>
       </div>
     </div>
+    <br>
     <div class="row" style="justify-content: center;">  
-      <div class="col-md-9" style="align-items: center;">
+      <div class="col-md-9" style="align-items: center; background-color: ghostwhite; border: thin solid black;">
         <div class="article" style="text-align: center;">
           <h2 class="articleHeading">Correlations Discovered Between Health Risks and Age, Income</h2>
-          <p style="text-align: left;"> - Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor
-            quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean
-            ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+          <p style="text-align: left;"><strong>Obesity</strong><br>
+             - As it related to poverty, we can see there is a slightly positive correlation between states' obesity rates and the percentange 
+            of the states' population living in poverty. <br>
+             - Age and Obesity do not appear to have a meaningful correlation at the state level. <br>
+             - One of the stronger correlations in the entire set, Obesity and Median Household Income have a clearly visible negative correlation. In better terms, 
+            obesity rates are lower in states with a higher Median Household Income.</p>
 
-          <p style="text-align: left;"> - Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor
-            quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean
-            ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+          <p style="text-align: left;"><strong>Smoking</strong><br>
+             - Another one of our stronger correlations, Smoking and Poverty have a slightly visible positive correlation. <br>
+             - When it comes to Smoking and Age, it appears that most states fall within a ten year age range for their median smoker's age. Only 4 of the datapoints in the 
+            entire dataset fall outside of ages 32 to 42. <br>
+             - Similar to Obesity and Median Household Income, we see a strong negative correlation between the percentange of smokers and the Median Household Income.</p>
 
-          <p style="text-align: left;"> - Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor
-            quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean
-            ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+          <p style="text-align: left;"><strong>Healthcare</strong><br>
+             - Similar to Obesity and Smoking, we seea strong positive correlation between the percentange of residents lacking healthcare and the percentange of residents 
+            in poverty. <br>
+             - Again, the Age group seems to show no reasonable correlation, and most datapoints fall between 32 and 42. <br>
+             - The weakest of the three groups, Median Household Income and percentange of residents lacking healthcare still show a visible negative correlation.</p>
         </div>
       </div>
     </div>
@@ -50,6 +64,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
   <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.js"></script>
   <script type="text/javascript" src="assets/js/app.js"></script>
   <script type="text/javascript" src="assets/js/functions.js"></script>
 

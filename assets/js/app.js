@@ -1,14 +1,14 @@
 // @TODO: YOUR CODE HERE!
 
 // Define SVG area dimensions
-var svgWidth = 960;
-var svgHeight = 500;
+var svgWidth = 1026;
+var svgHeight = 700;
 
 // Define the chart's margins as an object
 var margin = {
     top: 20,
     right: 40,
-    bottom: 80,
+    bottom: 100,
     left: 100
   };
 
@@ -30,6 +30,29 @@ var chartGroup = svg.append("g")
 // Set initial axis names
 var xLabel = "poverty"
 var yLabel = "healthcare"
+
+// Setup second SVG for correlation area
+var svg2Width = 1026;
+var svg2Height = 100;
+
+// Define the chart's margins as an object
+var margin2 = {
+    top: 40,
+    right: 10,
+    bottom: 10,
+    left: 10
+  };
+
+// Define dimensions of the chart area
+var dataWidth = svg2Width - margin.left - margin.right;
+var dataHeight = svg2Height - margin.top - margin.bottom;
+
+// Select body, append SVG area to it, and set its dimensions
+var svg2 = d3.select("#linRegress")
+  .append("svg")
+  .attr("width", svg2Width)
+  .attr("height", svg2Height)
+  .attr("fill", "white");
 
 // Load data from .csv file
 d3.csv("assets/data/data.csv").then(function(data) {
@@ -94,7 +117,7 @@ d3.csv("assets/data/data.csv").then(function(data) {
 
     // Create group for xAxis labels
     var xlabelsGroup = chartGroup.append("g")
-        .attr("transform", `translate(${width / 2}, ${height})`);
+        .attr("transform", `translate(${chartWidth / 2}, ${chartHeight})`);
 
     var povertyLabel = xlabelsGroup.append("text")
         .attr("x", 0)
@@ -122,7 +145,7 @@ d3.csv("assets/data/data.csv").then(function(data) {
 
     var healthcareLabel = ylabelsGroup.append("text")
         .attr("transform", "rotate(-90)")
-        .attr("x", -(height / 2))
+        .attr("x", -(chartHeight / 2))
         .attr("y", -40)
         .attr("value", "healthcare") // value to grab for event listener
         .text("Lacks Healthcare (%)")
@@ -130,7 +153,7 @@ d3.csv("assets/data/data.csv").then(function(data) {
 
     var smokesLabel = ylabelsGroup.append("text")
         .attr("transform", "rotate(-90)")
-        .attr("x", -(height / 2))
+        .attr("x", -(chartHeight / 2))
         .attr("y", -60)
         .attr("value", "smokes") // value to grab for event listener
         .text("Smokes (%)")
@@ -138,10 +161,181 @@ d3.csv("assets/data/data.csv").then(function(data) {
 
     var obeseLabel = ylabelsGroup.append("text")
         .attr("transform", "rotate(-90)")
-        .attr("x", -(height / 2))
+        .attr("x", -(chartHeight / 2))
         .attr("y", -80)
         .attr("value", "obesity") // value to grab for event listener
         .text("Obese (%)")
         .classed("inactive", true);
 
+    
+    // Append a group area, then set its margins
+    var statsGroup = svg2.selectAll("text")
+        .data([1])
+        .enter()
+        .append("text")
+        .attr("transform", `translate(${margin2.left}, ${margin2.right})`);
+      // // set variables for corr coefficient
+      var xArr = statesData.map(function(data) {
+        return data[xLabel];
     });
+      var yArr = statesData.map(function(data) {
+        return data[yLabel];
+    });
+
+    var corrCoeff = pearson(xArr, yArr);
+    console.log(corrCoeff);
+
+    // Add the SVG text element to SVG2
+    var statsText = statsGroup
+        .attr("x", 50)
+        .attr("y", 50)
+        .text("Correlation Coefficient: " + corrCoeff.toFixed(6))
+        .attr("fill", "black");
+        
+  // x axis labels event listener
+  xlabelsGroup.selectAll("text")
+    .on("click", function() {
+    var value = d3.select(this).attr("value");
+    if (value !== xLabel) {
+
+      // replaces xLabel with value
+      xLabel = value;
+
+      // updates x scale for new data
+      xLinearScale = xScale(statesData, xLabel);
+
+      // updates x axis with transition
+      xAxis = renderXAxes(xLinearScale, xAxis);
+
+      // updates circles with new x values
+      circlesLoc = renderXCircles(circlesLoc, xLinearScale, xLabel);
+
+      // updates circles text with new x values
+      circlesLabel = renderXText(circlesLabel, xLinearScale, xLabel);
+      
+      // update correlation coefficient
+            var xArr = statesData.map(function(data) {
+                return data[xLabel];
+            });
+        
+            var corrCoeff = pearson(xArr, yArr);
+            console.log(corrCoeff);
+            var statsText = statsGroup
+            .attr("x", 50)
+            .attr("y", 50)
+            .text("Correlation Coefficient: " + corrCoeff.toFixed(6))
+            .attr("fill", "black");
+
+      // updates tooltips with new info
+      circlesGroup = updateToolTip(circlesGroup, xLabel, yLabel);
+
+      // changes classes to change bold text
+      if (xLabel === "age") {
+        povertyLabel
+          .classed("active", false)
+          .classed("inactive", true);
+        ageLabel
+          .classed("active", true)
+          .classed("inactive", false);
+        incomeLabel
+          .classed("active", false)
+          .classed("inactive", true);
+      }
+      else if (xLabel === "income") {
+        povertyLabel
+          .classed("active", false)
+          .classed("inactive", true);
+        ageLabel
+          .classed("active", false)
+          .classed("inactive", true);
+        incomeLabel
+          .classed("active", true)
+          .classed("inactive", false);
+      }
+      else {
+        povertyLabel
+          .classed("active", true)
+          .classed("inactive", false);
+        ageLabel
+          .classed("active", false)
+          .classed("inactive", true);
+        incomeLabel
+          .classed("active", false)
+          .classed("inactive", true);
+      }
+    }
+  });
+  // y axis labels event listener
+  ylabelsGroup.selectAll("text")
+    .on("click", function() {
+    // get value of selection
+    var value = d3.select(this).attr("value");
+    if (value !== yLabel) {
+
+      // replaces yLabel with value
+      yLabel = value;
+
+      // updates y scale for new data
+      yLinearScale = yScale(statesData, yLabel);
+
+      // updates y axis with transition
+      yAxis = renderYAxes(yLinearScale, yAxis);
+
+      // updates circles with new y values
+      circlesXY = renderYCircles(circlesLoc, yLinearScale, yLabel);
+
+      // updates circles text with new y values
+      circlesLabel = renderYText(circlesLabel, yLinearScale, yLabel);
+
+      // updates tooltips with new info
+      circlesGroup = updateToolTip(circlesGroup, xLabel, yLabel);
+
+      // update correlation coefficient
+      var yArr = statesData.map(function(data) {
+        return data[yLabel];
+    });
+      var corrCoeff = pearson(xArr, yArr);
+      var statsText = statsGroup
+        .attr("x", 50)
+        .attr("y", 50)
+        .text("Correlation Coefficient: " + corrCoeff.toFixed(6))
+        .attr("fill", "black");
+      // changes classes to change bold text
+      if (yLabel === "smokes") {
+        healthcareLabel
+          .classed("active", false)
+          .classed("inactive", true);
+        smokesLabel
+          .classed("active", true)
+          .classed("inactive", false);
+        obeseLabel
+          .classed("active", false)
+          .classed("inactive", true);
+      }
+      else if (yLabel === "obesity"){
+        healthcareLabel
+          .classed("active", false)
+          .classed("inactive", true);
+        smokesLabel
+          .classed("active", false)
+          .classed("inactive", true);
+        obeseLabel
+          .classed("active", true)
+          .classed("inactive", false);
+      }
+      else {
+        healthcareLabel
+          .classed("active", true)
+          .classed("inactive", false);
+        smokesLabel
+          .classed("active", false)
+          .classed("inactive", true);
+        obeseLabel
+          .classed("active", false)
+          .classed("inactive", true);
+      }
+    }
+  });
+// initial tooltips
+circlesGroup = updateToolTip(circlesGroup, xLabel, yLabel);
+});

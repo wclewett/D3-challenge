@@ -15,7 +15,7 @@
     font-family: 'Droid Serif', serif;
     font-size: 20px;
     color: #2f2f2f;
-    background-color: #f9f7f1;
+    background-color: #89bdd3;
   }
   
   #footer {
@@ -43,6 +43,7 @@
     display: inline-block;
     line-height: 72px;
     margin-bottom: 20px;
+    color: black;
 }  
 
 .articleHeading {
@@ -60,5 +61,9 @@
 #scatter {
     text-align: center;
     background-color: ghostwhite;
-    border: thin solid black;
+}
+
+#linRegress {
+    text-align: center;
+    background-color: ghostwhite;
 }

@@ -83,6 +83,39 @@ function renderYText(circlesGroup, newYScale, yLabel) {
 
   return circlesGroup;
 }
+// create regression line functions
+function regressionSetup(csvData, xLabel, yLabel, xArr) {
+  var linearRegression = ss.linearRegression(csvData.map(d => [d[xLabel], d[yLabel]]));
+  var linearRegressionLine = ss.linearRegressionLine(linearRegression);
+
+  function regressionPoints(xArr) {
+    var firstX = d3.min(xArr);
+    var lastX = d3.max(xArr);
+    var xCoordinates = [firstX, lastX];
+        
+    return xCoordinates.map(d => ({
+      x: d,                         // We pick x and y arbitrarily, just make sure they match d3.line accessors
+      y: linearRegressionLine(d)
+    }));
+  };
+
+  var linePoints = regressionPoints(xArr);
+  return linePoints;
+}
+
+function renderRegression(csvData, plotRegress, newXScale, newYScale, xLabel, yLabel, xArr) {
+  var newLine = d3.line()
+   .x(data => newXScale(data.x))
+   .y(data => newYScale(data.y));
+  
+  var newRegressPoints = regressionSetup(csvData, xLabel, yLabel, xArr);
+
+  plotRegress.transition()
+    .duration(1000)
+    .attr("d", newLine(newRegressPoints));
+  
+  return plotRegress;
+}
 
 // format number to USD currency
 var formatter = new Intl.NumberFormat('en-US', {

@@ -174,16 +174,30 @@ d3.csv("assets/data/data.csv").then(function(data) {
         .enter()
         .append("text")
         .attr("transform", `translate(${margin2.left}, ${margin2.right})`);
-      // // set variables for corr coefficient
-      var xArr = statesData.map(function(data) {
+
+    // set x y variables for corrCoeff and linRegress
+    var xArr = statesData.map(function(data) {
         return data[xLabel];
     });
-      var yArr = statesData.map(function(data) {
+    var yArr = statesData.map(function(data) {
         return data[yLabel];
     });
 
+    var createLine = d3.line()
+        .x(data => xLinearScale(data.x))
+        .y(data => yLinearScale(data.y));
+
+    var regressPoints = regressionSetup(statesData, xLabel, yLabel, xArr);
+
+    var plotRegress = chartGroup.append("path")
+        .attr("class", "plot")
+        .attr("stroke", "purple")
+        .attr("stroke-width", "1")
+        .attr("fill", "none")
+        .attr("d", createLine(regressPoints));
+
+    // Setup corrCoeff
     var corrCoeff = pearson(xArr, yArr);
-    console.log(corrCoeff);
 
     // Add the SVG text element to SVG2
     var statsText = statsGroup
@@ -197,10 +211,12 @@ d3.csv("assets/data/data.csv").then(function(data) {
     .on("click", function() {
     var value = d3.select(this).attr("value");
     if (value !== xLabel) {
-
       // replaces xLabel with value
       xLabel = value;
 
+      var xArr = statesData.map(function(data) {
+        return data[xLabel];
+      });
       // updates x scale for new data
       xLinearScale = xScale(statesData, xLabel);
 
@@ -212,19 +228,18 @@ d3.csv("assets/data/data.csv").then(function(data) {
 
       // updates circles text with new x values
       circlesLabel = renderXText(circlesLabel, xLinearScale, xLabel);
-      
+
+      // updates new linear regression line
+      plotRegress = renderRegression(statesData, plotRegress, xLinearScale, yLinearScale, xLabel, yLabel, xArr);
+
       // update correlation coefficient
-            var xArr = statesData.map(function(data) {
-                return data[xLabel];
-            });
-        
-            var corrCoeff = pearson(xArr, yArr);
-            console.log(corrCoeff);
-            var statsText = statsGroup
-            .attr("x", 50)
-            .attr("y", 50)
-            .text("Correlation Coefficient: " + corrCoeff.toFixed(6))
-            .attr("fill", "black");
+      var corrCoeff = pearson(xArr, yArr);
+
+      var statsText = statsGroup
+        .attr("x", 50)
+        .attr("y", 50)
+        .text("Correlation Coefficient: " + corrCoeff.toFixed(6))
+        .attr("fill", "black");
 
       // updates tooltips with new info
       circlesGroup = updateToolTip(circlesGroup, xLabel, yLabel);
@@ -274,7 +289,9 @@ d3.csv("assets/data/data.csv").then(function(data) {
 
       // replaces yLabel with value
       yLabel = value;
-
+      var yArr = statesData.map(function(data) {
+        return data[yLabel];
+      });
       // updates y scale for new data
       yLinearScale = yScale(statesData, yLabel);
 
@@ -289,11 +306,11 @@ d3.csv("assets/data/data.csv").then(function(data) {
 
       // updates tooltips with new info
       circlesGroup = updateToolTip(circlesGroup, xLabel, yLabel);
-
+      
+      // updates linear regression line
+      plotRegress = renderRegression(statesData, plotRegress, xLinearScale, yLinearScale, xLabel, yLabel, xArr);
+      
       // update correlation coefficient
-      var yArr = statesData.map(function(data) {
-        return data[yLabel];
-    });
       var corrCoeff = pearson(xArr, yArr);
       var statsText = statsGroup
         .attr("x", 50)

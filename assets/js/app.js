@@ -1,7 +1,7 @@
 // @TODO: YOUR CODE HERE!
 
 // Define SVG area dimensions
-var svgWidth = 1026;
+var svgWidth = 960;
 var svgHeight = 700;
 
 // Define the chart's margins as an object
@@ -32,7 +32,7 @@ var xLabel = "poverty"
 var yLabel = "healthcare"
 
 // Setup second SVG for correlation area
-var svg2Width = 1026;
+var svg2Width = 960;
 var svg2Height = 100;
 
 // Define the chart's margins as an object

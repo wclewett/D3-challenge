@@ -1,6 +1,6 @@
 # D3 Challenge
 
-This project has been deployed [here.] (https://wclewett.github.io/D3-challenge/)
+This project has been deployed [here.](https://wclewett.github.io/D3-challenge/)
 
 ![Newsroom](https://media.giphy.com/media/v2xIous7mnEYg/giphy.gif)
 

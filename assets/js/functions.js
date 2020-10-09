@@ -85,21 +85,29 @@ function renderYText(circlesGroup, newYScale, yLabel) {
 }
 // create regression line functions
 function regressionSetup(csvData, xLabel, yLabel, xArr) {
+  var xArrNew = csvData.map(function(data) {
+    return data[xLabel];
+  });
+
   var linearRegression = ss.linearRegression(csvData.map(d => [d[xLabel], d[yLabel]]));
   var linearRegressionLine = ss.linearRegressionLine(linearRegression);
 
-  function regressionPoints(xArr) {
-    var firstX = d3.min(xArr);
-    var lastX = d3.max(xArr);
+  function regressionPoints() {
+    var firstX = d3.min(xArrNew);
+    console.log(firstX);
+    var lastX = d3.max(xArrNew);
+    console.log(lastX);
     var xCoordinates = [firstX, lastX];
-        
-    return xCoordinates.map(d => ({
+    var lineEndpoints = xCoordinates.map(d => ({
       x: d,                         // We pick x and y arbitrarily, just make sure they match d3.line accessors
       y: linearRegressionLine(d)
     }));
+    console.log(xCoordinates);
+    console.log(lineEndpoints);     
+    return lineEndpoints;
   };
 
-  var linePoints = regressionPoints(xArr);
+  var linePoints = regressionPoints(xArrNew);
   return linePoints;
 }
 

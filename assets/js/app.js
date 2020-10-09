@@ -217,8 +217,9 @@ d3.csv("assets/data/data.csv").then(function(data) {
       var xArr = statesData.map(function(data) {
         return data[xLabel];
       });
-      // updates x scale for new data
+      // updates scales for new data
       xLinearScale = xScale(statesData, xLabel);
+      yLinearScale = yScale(statesData, yLabel);
 
       // updates x axis with transition
       xAxis = renderXAxes(xLinearScale, xAxis);
@@ -292,7 +293,8 @@ d3.csv("assets/data/data.csv").then(function(data) {
       var yArr = statesData.map(function(data) {
         return data[yLabel];
       });
-      // updates y scale for new data
+      // updates scales for new data
+      xLinearScale = xScale(statesData, xLabel);
       yLinearScale = yScale(statesData, yLabel);
 
       // updates y axis with transition
@@ -309,7 +311,7 @@ d3.csv("assets/data/data.csv").then(function(data) {
       
       // updates linear regression line
       plotRegress = renderRegression(statesData, plotRegress, xLinearScale, yLinearScale, xLabel, yLabel, xArr);
-      
+
       // update correlation coefficient
       var corrCoeff = pearson(xArr, yArr);
       var statsText = statsGroup
